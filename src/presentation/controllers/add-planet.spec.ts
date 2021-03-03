@@ -34,4 +34,18 @@ describe('AddPlanet Controller', () => {
     expect(httpResponse.statusCode).toBe(400);
     expect(httpResponse.body).toEqual(new MissingParamError('climate'));
   });
+
+  test('Should return 400 if no ground is provided', async () => {
+    const sut = makeSut();
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        climate: 'any_climate',
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    console.log(httpResponse);
+    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body).toEqual(new MissingParamError('ground'));
+  });
 });
