@@ -7,7 +7,7 @@ export class AddPlanetController implements Controller {
   constructor() {}
 
   async handle(request: HttpRequest): Promise<HttpResponse> {
-    const requiredFields = ['name', 'climate'];
+    const requiredFields = ['name', 'climate', 'ground'];
 
     for (const field of requiredFields) {
       if (!request.body[field]) {
