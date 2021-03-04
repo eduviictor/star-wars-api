@@ -2,6 +2,7 @@ import { MissingParamError } from '@/presentation/errors/missing-param-error';
 import { AddPlanetController } from '@/presentation/controllers/add-planet';
 import { AddPlanet, AddPlanetModel } from '@/domain/usecases/add-planet';
 import { PlanetModel } from '@/domain/models/planet';
+import { ServerError } from '../errors/server-error';
 
 const makeAddPlanet = (): AddPlanet => {
   class AddPlanetStub implements AddPlanet {
@@ -92,5 +93,22 @@ describe('AddPlanet Controller', () => {
       climate: 'any_climate',
       ground: 'any_ground',
     });
+  });
+
+  test('Should return 500 if AddPlanet throws', async () => {
+    const { sut, addPlanetStub } = makeSut();
+    jest.spyOn(addPlanetStub, 'add').mockImplementationOnce(async () => {
+      return await new Promise((resolve, reject) => reject(new Error()));
+    });
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        climate: 'any_climate',
+        ground: 'any_ground',
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse.body).toEqual(new ServerError());
   });
 });
