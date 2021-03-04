@@ -1,3 +1,6 @@
+import { PlanetModel } from '@/domain/models/planet';
+import { AddPlanetModel } from '@/domain/usecases/add-planet';
+import { AddPlanetRepository } from '../protocols/db/add-planet-repository';
 import { MoviesPlanet } from '../protocols/request/movies-planet';
 import { DbAddPlanet } from './db-add-planet';
 
@@ -11,17 +14,36 @@ const makeMoviesPlanet = (): MoviesPlanet => {
   return new MoviesPlanetStub();
 };
 
+const makeAddPlanetRepository = (): AddPlanetRepository => {
+  class AddPlanetRepositoryStub implements AddPlanetRepository {
+    async add(planet: AddPlanetModel): Promise<PlanetModel> {
+      const fakePlanet = {
+        id: 'valid_id',
+        name: 'valid_name',
+        climate: 'valid_climate',
+        ground: 'valid_ground',
+      };
+      return await new Promise((resolve) => resolve(fakePlanet));
+    }
+  }
+
+  return new AddPlanetRepositoryStub();
+};
+
 interface SutTypes {
   sut: DbAddPlanet;
   moviesPlanetStub: MoviesPlanet;
+  addPlanetRepositoryStub: AddPlanetRepository;
 }
 
 const makeSut = (): SutTypes => {
   const moviesPlanetStub = makeMoviesPlanet();
-  const sut = new DbAddPlanet(moviesPlanetStub);
+  const addPlanetRepositoryStub = makeAddPlanetRepository();
+  const sut = new DbAddPlanet(moviesPlanetStub, addPlanetRepositoryStub);
   return {
     sut,
     moviesPlanetStub,
+    addPlanetRepositoryStub,
   };
 };
 
@@ -56,5 +78,28 @@ describe('DbAddPlanet Usecase', () => {
     const promise = sut.add(planetData);
 
     await expect(promise).rejects.toThrow();
+  });
+
+  test('Should call AddPlanetRepository with correct values', async () => {
+    const { sut, moviesPlanetStub, addPlanetRepositoryStub } = makeSut();
+    const addSpy = jest.spyOn(addPlanetRepositoryStub, 'add');
+    jest
+      .spyOn(moviesPlanetStub, 'get')
+      .mockReturnValueOnce(new Promise((resolve, reject) => resolve(10)));
+
+    const planetData = {
+      name: 'valid_name',
+      climate: 'valid_climate',
+      ground: 'valid_ground',
+    };
+
+    await sut.add(planetData);
+
+    expect(addSpy).toHaveBeenCalledWith({
+      name: 'valid_name',
+      climate: 'valid_climate',
+      ground: 'valid_ground',
+      movies: 10,
+    });
   });
 });
