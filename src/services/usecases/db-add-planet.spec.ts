@@ -81,6 +81,29 @@ describe('DbAddPlanet Usecase', () => {
     await expect(promise).rejects.toThrow();
   });
 
+  test('Should DbAddPlanet assign 0 if MoviesPlanet return false', async () => {
+    const { sut, moviesPlanetStub, addPlanetRepositoryStub } = makeSut();
+    jest
+      .spyOn(moviesPlanetStub, 'getMoviesPlanet')
+      .mockReturnValueOnce(new Promise((resolve) => resolve(false)));
+
+    const addSpy = jest.spyOn(addPlanetRepositoryStub, 'add');
+
+    const planetData = {
+      name: 'invalid_name',
+      climate: 'valid_climate',
+      ground: 'valid_ground',
+    };
+    await sut.add(planetData);
+
+    expect(addSpy).toHaveBeenCalledWith({
+      name: 'invalid_name',
+      climate: 'valid_climate',
+      ground: 'valid_ground',
+      movies: 0,
+    });
+  });
+
   test('Should call AddPlanetRepository with correct values', async () => {
     const { sut, addPlanetRepositoryStub } = makeSut();
     const addSpy = jest.spyOn(addPlanetRepositoryStub, 'add');
