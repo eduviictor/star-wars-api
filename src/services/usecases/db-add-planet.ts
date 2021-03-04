@@ -11,7 +11,7 @@ export class DbAddPlanet implements AddPlanet {
 
   async add(planet: AddPlanetModel): Promise<PlanetModel> {
     const { name, climate, ground } = planet;
-    const numberMovies = await this.moviesPlanet.get(name);
+    const numberMovies = await this.moviesPlanet.getMoviesPlanet(name);
 
     const planetResult = await this.addPlanetRepository.add({
       name,

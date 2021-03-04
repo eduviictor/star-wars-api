@@ -6,7 +6,7 @@ import { DbAddPlanet } from './db-add-planet';
 
 const makeMoviesPlanet = (): MoviesPlanet => {
   class MoviesPlanetStub implements MoviesPlanet {
-    async get(value: string): Promise<number> {
+    async getMoviesPlanet(value: string): Promise<number> {
       return await new Promise((resolve) => resolve(5));
     }
   }
@@ -51,7 +51,7 @@ const makeSut = (): SutTypes => {
 describe('DbAddPlanet Usecase', () => {
   test('Should call MoviesPlanet with correct name', async () => {
     const { sut, moviesPlanetStub } = makeSut();
-    const moviesPlanetSpy = jest.spyOn(moviesPlanetStub, 'get');
+    const moviesPlanetSpy = jest.spyOn(moviesPlanetStub, 'getMoviesPlanet');
     const planetData = {
       name: 'any_name',
       climate: 'any_climate',
@@ -66,7 +66,7 @@ describe('DbAddPlanet Usecase', () => {
   test('Should throw if MoviesPlanet throws', async () => {
     const { sut, moviesPlanetStub } = makeSut();
     jest
-      .spyOn(moviesPlanetStub, 'get')
+      .spyOn(moviesPlanetStub, 'getMoviesPlanet')
       .mockReturnValueOnce(
         new Promise((resolve, reject) => reject(new Error()))
       );
