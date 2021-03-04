@@ -1,6 +1,6 @@
 export interface PlanetModel {
   id: string;
-  namename: string;
+  name: string;
   climate: string;
   ground: string;
 }

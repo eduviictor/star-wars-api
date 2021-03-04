@@ -1,7 +1,7 @@
-import { PlanetModel } from "../models/Planet";
+import { PlanetModel } from '../models/planet';
 
 export interface AddPlanetModel {
-  namename: string;
+  name: string;
   climate: string;
   ground: string;
 }
