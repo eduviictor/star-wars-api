@@ -7,7 +7,7 @@ import { DbAddPlanet } from './db-add-planet';
 const makeMoviesPlanet = (): MoviesPlanet => {
   class MoviesPlanetStub implements MoviesPlanet {
     async get(value: string): Promise<number> {
-      return await new Promise((resolve) => resolve(10));
+      return await new Promise((resolve) => resolve(5));
     }
   }
 
@@ -22,7 +22,7 @@ const makeAddPlanetRepository = (): AddPlanetRepository => {
         name: 'valid_name',
         climate: 'valid_climate',
         ground: 'valid_ground',
-        movies: 10,
+        movies: 5,
       };
       return await new Promise((resolve) => resolve(fakePlanet));
     }
@@ -82,11 +82,8 @@ describe('DbAddPlanet Usecase', () => {
   });
 
   test('Should call AddPlanetRepository with correct values', async () => {
-    const { sut, moviesPlanetStub, addPlanetRepositoryStub } = makeSut();
+    const { sut, addPlanetRepositoryStub } = makeSut();
     const addSpy = jest.spyOn(addPlanetRepositoryStub, 'add');
-    jest
-      .spyOn(moviesPlanetStub, 'get')
-      .mockReturnValueOnce(new Promise((resolve, reject) => resolve(10)));
 
     const planetData = {
       name: 'valid_name',
@@ -100,7 +97,26 @@ describe('DbAddPlanet Usecase', () => {
       name: 'valid_name',
       climate: 'valid_climate',
       ground: 'valid_ground',
-      movies: 10,
+      movies: 5,
+    });
+  });
+
+  test('Should return an planet on success', async () => {
+    const { sut } = makeSut();
+
+    const planetData = {
+      name: 'valid_name',
+      climate: 'valid_climate',
+      ground: 'valid_ground',
+    };
+    const planet = await sut.add(planetData);
+
+    expect(planet).toEqual({
+      id: 'valid_id',
+      name: 'valid_name',
+      climate: 'valid_climate',
+      ground: 'valid_ground',
+      movies: 5,
     });
   });
 });
