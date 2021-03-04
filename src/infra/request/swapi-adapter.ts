@@ -9,7 +9,7 @@ export class SwapiAdapter implements MoviesPlanet {
 
   constructor(private readonly apiRequest: ApiRequest) {}
 
-  async getMoviesPlanet(name: string): Promise<number | false> {
+  async getMoviesPlanet(name: string): Promise<number> {
     const numberMovies = await this.call(
       `${this.baseUrl}/planets`,
       this.headersSwapi,
@@ -17,13 +17,13 @@ export class SwapiAdapter implements MoviesPlanet {
     );
 
     if (!numberMovies) {
-      return false;
+      return 0;
     }
 
     return numberMovies;
   }
 
-  async call(url: string, headers: {}, name: string): Promise<any> {
+  async call(url: string, headers: {}, name: string): Promise<number> {
     const response: SwapiResponse = await this.apiRequest.get(url, headers);
 
     const arrayPlanets = response.results;
@@ -31,11 +31,14 @@ export class SwapiAdapter implements MoviesPlanet {
     const planet = arrayPlanets.find((planet) => planet.name == name);
 
     if (planet) {
-      return planet?.films.length;
+      if (!planet.films) {
+        return 0;
+      }
+      return planet.films.length;
     }
 
     if (!response.next) {
-      return false;
+      return 0;
     }
 
     return this.call(response.next, headers, name);
