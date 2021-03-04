@@ -1,5 +1,6 @@
 import { MoviesPlanet } from '@/services/protocols/request/movies-planet';
 import { ApiRequest } from '../protocols/api-request';
+import { SwapiResponse } from '../protocols/swapi-response';
 import { SwapiConfig } from './swapi-config';
 
 export class SwapiAdapter implements MoviesPlanet {
@@ -9,9 +10,14 @@ export class SwapiAdapter implements MoviesPlanet {
   constructor(private readonly apiRequest: ApiRequest) {}
 
   async getMoviesPlanet(name: string): Promise<number> {
-    const response = await this.apiRequest.get(
+    const response: SwapiResponse = await this.apiRequest.get(
       `${this.baseUrl}/planets`,
       this.headersSwapi
     );
+
+    const arrayPlanets = response.results;
+
+    const planet = arrayPlanets.find((planet) => planet.name == name);
+    return planet?.films.length;
   }
 }
