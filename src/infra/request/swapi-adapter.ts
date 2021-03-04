@@ -18,6 +18,10 @@ export class SwapiAdapter implements MoviesPlanet {
     const arrayPlanets = response.results;
 
     const planet = arrayPlanets.find((planet) => planet.name == name);
+
+    if (!planet) {
+      return false;
+    }
     return planet?.films.length;
   }
 }
