@@ -13,13 +13,13 @@ export class DbAddPlanet implements AddPlanet {
     const { name, climate, ground } = planet;
     const numberMovies = await this.moviesPlanet.get(name);
 
-    await this.addPlanetRepository.add({
+    const planetResult = await this.addPlanetRepository.add({
       name,
       climate,
       ground,
       movies: numberMovies,
     });
 
-    return null;
+    return planetResult;
   }
 }
