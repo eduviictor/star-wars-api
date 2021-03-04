@@ -55,4 +55,11 @@ describe('Swapi Adapter', () => {
     const numberMovies = await sut.getMoviesPlanet('any_name');
     expect(numberMovies).toBe(2);
   });
+
+  test('Should returns false if planet not found', async () => {
+    const { sut } = makeSut();
+
+    const numberMovies = await sut.getMoviesPlanet('name_not_found');
+    expect(numberMovies).toBe(false);
+  });
 });
