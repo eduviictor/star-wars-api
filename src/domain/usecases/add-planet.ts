@@ -1,4 +1,4 @@
-import { PlanetModel } from '../models/planet';
+import { PlanetModel, PlanetModelCreate } from '../models/planet';
 
 export interface AddPlanetModel {
   name: string;
@@ -7,5 +7,5 @@ export interface AddPlanetModel {
 }
 
 export interface AddPlanet {
-  add: (planet: AddPlanetModel) => Promise<PlanetModel>;
+  add: (planet: AddPlanetModel) => Promise<PlanetModelCreate>;
 }

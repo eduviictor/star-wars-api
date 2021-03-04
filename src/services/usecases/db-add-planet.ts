@@ -1,12 +1,25 @@
 import { PlanetModel } from '@/domain/models/planet';
 import { AddPlanet, AddPlanetModel } from '@/domain/usecases/add-planet';
+import { AddPlanetRepository } from '../protocols/db/add-planet-repository';
 import { MoviesPlanet } from '../protocols/request/movies-planet';
 
 export class DbAddPlanet implements AddPlanet {
-  constructor(private readonly moviesPlanet: MoviesPlanet) {}
+  constructor(
+    private readonly moviesPlanet: MoviesPlanet,
+    private readonly addPlanetRepository: AddPlanetRepository
+  ) {}
 
   async add(planet: AddPlanetModel): Promise<PlanetModel> {
-    const numberMovies = await this.moviesPlanet.get(planet.name);
+    const { name, climate, ground } = planet;
+    const numberMovies = await this.moviesPlanet.get(name);
+
+    await this.addPlanetRepository.add({
+      name,
+      climate,
+      ground,
+      movies: numberMovies,
+    });
+
     return null;
   }
 }

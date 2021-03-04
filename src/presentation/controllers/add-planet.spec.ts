@@ -1,17 +1,18 @@
 import { MissingParamError } from '@/presentation/errors/missing-param-error';
 import { AddPlanetController } from '@/presentation/controllers/add-planet';
 import { AddPlanet, AddPlanetModel } from '@/domain/usecases/add-planet';
-import { PlanetModel } from '@/domain/models/planet';
+import { PlanetModelCreate } from '@/domain/models/planet';
 import { ServerError } from '../errors/server-error';
 
 const makeAddPlanet = (): AddPlanet => {
   class AddPlanetStub implements AddPlanet {
-    async add(planet: AddPlanetModel): Promise<PlanetModel> {
+    async add(planet: AddPlanetModel): Promise<PlanetModelCreate> {
       const fakePlanet = {
         id: 'valid_id',
         name: 'valid_name',
         climate: 'valid_climate',
         ground: 'valid_ground',
+        movies: 5,
       };
 
       return await new Promise((resolve) => resolve(fakePlanet));
@@ -113,7 +114,16 @@ describe('AddPlanet Controller', () => {
   });
 
   test('Should return 200 if valid data is provided', async () => {
-    const { sut } = makeSut();
+    const { sut, addPlanetStub } = makeSut();
+    jest.spyOn(addPlanetStub, 'add').mockImplementationOnce(async () => {
+      return await {
+        id: 'valid_id',
+        name: 'valid_name',
+        climate: 'valid_climate',
+        ground: 'valid_ground',
+        movies: 5,
+      };
+    });
     const httpRequest = {
       body: {
         name: 'valid_name',
@@ -128,6 +138,7 @@ describe('AddPlanet Controller', () => {
       name: httpRequest.body.name,
       climate: httpRequest.body.climate,
       ground: httpRequest.body.ground,
+      movies: 5,
     });
   });
 });
