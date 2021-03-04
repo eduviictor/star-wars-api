@@ -5,9 +5,9 @@ import { Controller } from '../protocols/controller';
 import { HttpResponse, HttpRequest } from '../protocols/http';
 
 export class AddPlanetController implements Controller {
-  constructor(private readonly addPlanet: AddPlanet) {}
+  constructor (private readonly addPlanet: AddPlanet) {}
 
-  async handle(request: HttpRequest): Promise<HttpResponse> {
+  async handle (request: HttpRequest): Promise<HttpResponse> {
     try {
       const requiredFields = ['name', 'climate', 'ground'];
 

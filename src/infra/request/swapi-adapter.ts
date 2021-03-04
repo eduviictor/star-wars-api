@@ -4,12 +4,12 @@ import { SwapiResponse } from '../protocols/swapi-response';
 import { SwapiConfig } from './swapi-config';
 
 export class SwapiAdapter implements MoviesPlanet {
-  private baseUrl = SwapiConfig.url;
-  private headersSwapi = SwapiConfig.headers;
+  private readonly baseUrl = SwapiConfig.url;
+  private readonly headersSwapi = SwapiConfig.headers;
 
-  constructor(private readonly apiRequest: ApiRequest) {}
+  constructor (private readonly apiRequest: ApiRequest) {}
 
-  async getMoviesPlanet(name: string): Promise<number> {
+  async getMoviesPlanet (name: string): Promise<number> {
     const numberMovies = await this.call(
       `${this.baseUrl}/planets`,
       this.headersSwapi,
@@ -23,12 +23,12 @@ export class SwapiAdapter implements MoviesPlanet {
     return numberMovies;
   }
 
-  async call(url: string, headers: {}, name: string): Promise<number> {
+  async call (url: string, headers: {}, name: string): Promise<number> {
     const response: SwapiResponse = await this.apiRequest.get(url, headers);
 
     const arrayPlanets = response.results;
 
-    const planet = arrayPlanets.find((planet) => planet.name == name);
+    const planet = arrayPlanets.find((planet) => planet.name === name);
 
     if (planet) {
       if (!planet.films) {

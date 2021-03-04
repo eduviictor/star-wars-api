@@ -12,7 +12,9 @@
     "@typescript-eslint/restrict-template-expressions": "off",
     "@typescript-eslint/no-misused-promises": "off",
     "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/semi": ["error", "always"],
     "import/export": "off",
+    "@typescript-eslint/no-var-requires": 0,
     "quotes": ["error", "single"]
   }
 }
