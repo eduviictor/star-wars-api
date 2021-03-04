@@ -5,7 +5,8 @@ import { MoviesPlanet } from '../protocols/request/movies-planet';
 export class DbAddPlanet implements AddPlanet {
   constructor(private readonly moviesPlanet: MoviesPlanet) {}
 
-  add(planet: AddPlanetModel): Promise<PlanetModel> {
-    this.moviesPlanet.get(planet.name);
+  async add(planet: AddPlanetModel): Promise<PlanetModel> {
+    const numberMovies = await this.moviesPlanet.get(planet.name);
+    return null;
   }
 }
