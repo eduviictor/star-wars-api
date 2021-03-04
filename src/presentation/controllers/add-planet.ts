@@ -1,7 +1,6 @@
 import { AddPlanet } from '@/domain/usecases/add-planet';
 import { MissingParamError } from '../errors/missing-param-error';
-import { ServerError } from '../errors/server-error';
-import { badRequest, serverError } from '../helpers/http';
+import { badRequest, serverError, ok } from '../helpers/http';
 import { Controller } from '../protocols/controller';
 import { HttpResponse, HttpRequest } from '../protocols/http';
 
@@ -19,7 +18,9 @@ export class AddPlanetController implements Controller {
       }
       const { name, climate, ground } = request.body;
 
-      await this.addPlanet.add({ name, climate, ground });
+      const planet = await this.addPlanet.add({ name, climate, ground });
+
+      return ok(planet);
     } catch (error) {
       console.error(error);
       return serverError();
