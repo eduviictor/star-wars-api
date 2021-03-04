@@ -111,4 +111,23 @@ describe('AddPlanet Controller', () => {
     expect(httpResponse.statusCode).toBe(500);
     expect(httpResponse.body).toEqual(new ServerError());
   });
+
+  test('Should return 200 if valid data is provided', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {
+        name: 'valid_name',
+        climate: 'valid_climate',
+        ground: 'valid_ground',
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(200);
+    expect(httpResponse.body).toEqual({
+      id: 'valid_id',
+      name: httpRequest.body.name,
+      climate: httpRequest.body.climate,
+      ground: httpRequest.body.ground,
+    });
+  });
 });
