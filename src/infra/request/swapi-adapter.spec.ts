@@ -13,7 +13,7 @@ const makeApiRequest = (): ApiRequest => {
             films: ['any_film', 'any_film'],
           },
         ],
-        next: 'any_next_page',
+        next: null,
         previous: null,
       };
       return await new Promise((resolve) => resolve(fakeResponse));
@@ -37,7 +37,7 @@ const makeSut = (): SutTypes => {
 };
 
 describe('Swapi Adapter', () => {
-  test('Should call ApiRequest with correct values', async () => {
+  test('Should SwapiAdapter call ApiRequest with correct values', async () => {
     const { sut, apiRequestStub } = makeSut();
     const apiRequestSpy = jest.spyOn(apiRequestStub, 'get');
 
@@ -50,16 +50,53 @@ describe('Swapi Adapter', () => {
     );
   });
 
-  test('Should find the planet on the first request', async () => {
+  test('Should SwapiAdapter find the planet on the first request', async () => {
     const { sut } = makeSut();
     const numberMovies = await sut.getMoviesPlanet('any_name');
     expect(numberMovies).toBe(2);
   });
 
-  test('Should returns false if planet not found', async () => {
+  test('Should SwapiAdapter returns false if planet not found', async () => {
     const { sut } = makeSut();
 
     const numberMovies = await sut.getMoviesPlanet('name_not_found');
     expect(numberMovies).toBe(false);
+  });
+
+  test('Should SwapiAdapter find the planet on the five request', async () => {
+    const { sut, apiRequestStub } = makeSut();
+
+    const responseNotFound: SwapiResponse = {
+      results: [
+        {
+          name: 'any_name',
+          films: ['any_film', 'any_film'],
+        },
+      ],
+      next: 'any_next_page',
+      previous: null,
+    };
+
+    const responseFound: SwapiResponse = {
+      results: [
+        {
+          name: 'valid_name',
+          films: ['any_film', 'any_film'],
+        },
+      ],
+      next: 'any_next_page',
+      previous: null,
+    };
+
+    jest
+      .spyOn(apiRequestStub, 'get')
+      .mockReturnValueOnce(new Promise((resolve) => resolve(responseNotFound)))
+      .mockReturnValueOnce(new Promise((resolve) => resolve(responseNotFound)))
+      .mockReturnValueOnce(new Promise((resolve) => resolve(responseNotFound)))
+      .mockReturnValueOnce(new Promise((resolve) => resolve(responseNotFound)))
+      .mockReturnValueOnce(new Promise((resolve) => resolve(responseFound)));
+
+    const numberMovies = await sut.getMoviesPlanet('valid_name');
+    expect(numberMovies).toBe(2);
   });
 });
