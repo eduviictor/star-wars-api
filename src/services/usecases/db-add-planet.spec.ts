@@ -22,6 +22,7 @@ const makeAddPlanetRepository = (): AddPlanetRepository => {
         name: 'valid_name',
         climate: 'valid_climate',
         ground: 'valid_ground',
+        movies: 10,
       };
       return await new Promise((resolve) => resolve(fakePlanet));
     }
