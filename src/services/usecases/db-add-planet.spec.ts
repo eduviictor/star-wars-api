@@ -26,7 +26,7 @@ const makeSut = (): SutTypes => {
 };
 
 describe('DbAddPlanet Usecase', () => {
-  test('Should call GetMoviePlanet with correct name', async () => {
+  test('Should call MoviesPlanet with correct name', async () => {
     const { sut, moviesPlanetStub } = makeSut();
     const moviesPlanetSpy = jest.spyOn(moviesPlanetStub, 'get');
     const planetData = {
@@ -38,5 +38,23 @@ describe('DbAddPlanet Usecase', () => {
     await sut.add(planetData);
 
     expect(moviesPlanetSpy).toHaveBeenCalledWith('any_name');
+  });
+
+  test('Should throw if MoviesPlanet throws', async () => {
+    const { sut, moviesPlanetStub } = makeSut();
+    jest
+      .spyOn(moviesPlanetStub, 'get')
+      .mockReturnValueOnce(
+        new Promise((resolve, reject) => reject(new Error()))
+      );
+
+    const planetData = {
+      name: 'any_name',
+      climate: 'any_climate',
+      ground: 'any_ground',
+    };
+    const promise = sut.add(planetData);
+
+    await expect(promise).rejects.toThrow();
   });
 });
