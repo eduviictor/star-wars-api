@@ -9,19 +9,35 @@ export class SwapiAdapter implements MoviesPlanet {
 
   constructor(private readonly apiRequest: ApiRequest) {}
 
-  async getMoviesPlanet(name: string): Promise<number> {
-    const response: SwapiResponse = await this.apiRequest.get(
+  async getMoviesPlanet(name: string): Promise<number | false> {
+    const numberMovies = await this.call(
       `${this.baseUrl}/planets`,
-      this.headersSwapi
+      this.headersSwapi,
+      name
     );
+
+    if (!numberMovies) {
+      return false;
+    }
+
+    return numberMovies;
+  }
+
+  async call(url: string, headers: {}, name: string): Promise<any> {
+    const response: SwapiResponse = await this.apiRequest.get(url, headers);
 
     const arrayPlanets = response.results;
 
     const planet = arrayPlanets.find((planet) => planet.name == name);
 
-    if (!planet) {
+    if (planet) {
+      return planet?.films.length;
+    }
+
+    if (!response.next) {
       return false;
     }
-    return planet?.films.length;
+
+    return this.call(response.next, headers, name);
   }
 }
