@@ -4,12 +4,12 @@ module.exports = {
   coverageDirectory: 'coverage',
   coverageProvider: 'babel',
   testEnvironment: 'node',
+  preset: '@shelf/jest-mongodb',
   transform: {
     '.+\\.ts$': 'ts-jest',
   },
   moduleNameMapper: {
     '@/(.*)': '<rootDir>/src/$1',
   },
-  preset: '@shelf/jest-mongodb',
   testTimeout: 30000,
 };

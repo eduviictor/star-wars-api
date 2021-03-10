@@ -6,7 +6,7 @@ import { DbAddPlanet } from './db-add-planet';
 
 const makeMoviesPlanet = (): MoviesPlanet => {
   class MoviesPlanetStub implements MoviesPlanet {
-    async getMoviesPlanet (value: string): Promise<number> {
+    async getMoviesPlanet(value: string): Promise<number> {
       return await new Promise((resolve) => resolve(5));
     }
   }
@@ -16,13 +16,13 @@ const makeMoviesPlanet = (): MoviesPlanet => {
 
 const makeAddPlanetRepository = (): AddPlanetRepository => {
   class AddPlanetRepositoryStub implements AddPlanetRepository {
-    async add (planet: AddPlanetModel): Promise<PlanetModel> {
+    async add(planet: AddPlanetModel): Promise<PlanetModel> {
       const fakePlanet = {
         id: 'valid_id',
         name: 'valid_name',
         climate: 'valid_climate',
         ground: 'valid_ground',
-        movies: 5
+        movies: 5,
       };
       return await new Promise((resolve) => resolve(fakePlanet));
     }
@@ -32,9 +32,9 @@ const makeAddPlanetRepository = (): AddPlanetRepository => {
 };
 
 interface SutTypes {
-  sut: DbAddPlanet
-  moviesPlanetStub: MoviesPlanet
-  addPlanetRepositoryStub: AddPlanetRepository
+  sut: DbAddPlanet;
+  moviesPlanetStub: MoviesPlanet;
+  addPlanetRepositoryStub: AddPlanetRepository;
 }
 
 const makeSut = (): SutTypes => {
@@ -44,7 +44,7 @@ const makeSut = (): SutTypes => {
   return {
     sut,
     moviesPlanetStub,
-    addPlanetRepositoryStub
+    addPlanetRepositoryStub,
   };
 };
 
@@ -55,7 +55,7 @@ describe('DbAddPlanet Usecase', () => {
     const planetData = {
       name: 'any_name',
       climate: 'any_climate',
-      ground: 'any_ground'
+      ground: 'any_ground',
     };
 
     await sut.add(planetData);
@@ -74,7 +74,7 @@ describe('DbAddPlanet Usecase', () => {
     const planetData = {
       name: 'any_name',
       climate: 'any_climate',
-      ground: 'any_ground'
+      ground: 'any_ground',
     };
     const promise = sut.add(planetData);
 
@@ -92,7 +92,7 @@ describe('DbAddPlanet Usecase', () => {
     const planetData = {
       name: 'invalid_name',
       climate: 'valid_climate',
-      ground: 'valid_ground'
+      ground: 'valid_ground',
     };
     await sut.add(planetData);
 
@@ -100,7 +100,7 @@ describe('DbAddPlanet Usecase', () => {
       name: 'invalid_name',
       climate: 'valid_climate',
       ground: 'valid_ground',
-      movies: 0
+      movies: 0,
     });
   });
 
@@ -111,7 +111,7 @@ describe('DbAddPlanet Usecase', () => {
     const planetData = {
       name: 'valid_name',
       climate: 'valid_climate',
-      ground: 'valid_ground'
+      ground: 'valid_ground',
     };
 
     await sut.add(planetData);
@@ -120,7 +120,7 @@ describe('DbAddPlanet Usecase', () => {
       name: 'valid_name',
       climate: 'valid_climate',
       ground: 'valid_ground',
-      movies: 5
+      movies: 5,
     });
   });
 
@@ -130,7 +130,7 @@ describe('DbAddPlanet Usecase', () => {
     const planetData = {
       name: 'valid_name',
       climate: 'valid_climate',
-      ground: 'valid_ground'
+      ground: 'valid_ground',
     };
     const planet = await sut.add(planetData);
 
@@ -139,7 +139,7 @@ describe('DbAddPlanet Usecase', () => {
       name: 'valid_name',
       climate: 'valid_climate',
       ground: 'valid_ground',
-      movies: 5
+      movies: 5,
     });
   });
 });
