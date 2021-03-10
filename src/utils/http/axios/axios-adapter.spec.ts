@@ -40,4 +40,15 @@ describe('Axios Adapter', () => {
 
     expect(data).toBe('success');
   });
+
+  test('Should throw if axios throws', async () => {
+    const sut = makeSut();
+    jest
+      .spyOn(axios, 'get')
+      .mockReturnValueOnce(
+        new Promise((resolve, reject) => reject(new Error()))
+      );
+    const promise = sut.get('any_url', { headers: {} });
+    await expect(promise).rejects.toThrow();
+  });
 });
