@@ -47,4 +47,22 @@ describe('GetPlanets Controller', () => {
     expect(httpResponse.statusCode).toBe(500);
     expect(httpResponse.body).toEqual(new ServerError());
   });
+
+  test('Should return 200 if all goes well', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {},
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(200);
+    expect(httpResponse.body).toEqual([
+      {
+        id: 'valid_id',
+        name: 'valid_name',
+        climate: 'valid_climate',
+        ground: 'valid_ground',
+        movies: 5,
+      },
+    ]);
+  });
 });
