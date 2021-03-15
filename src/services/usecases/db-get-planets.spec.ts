@@ -46,6 +46,7 @@ describe('DbGetPlanets Usecase', () => {
 
     expect(indexSpy).toHaveBeenCalledTimes(1);
   });
+
   test('Should GetPlanetsRepository returns a list of planets successfully', async () => {
     const { sut } = makeSut();
 
@@ -60,5 +61,18 @@ describe('DbGetPlanets Usecase', () => {
         movies: 5,
       },
     ]);
+  });
+
+  test('Should throw if GetPlanetsRepository throws', async () => {
+    const { sut, getPlanetsRepositoryStub } = makeSut();
+    jest
+      .spyOn(getPlanetsRepositoryStub, 'index')
+      .mockReturnValueOnce(
+        new Promise((resolve, reject) => reject(new Error()))
+      );
+
+    const promise = sut.index();
+
+    await expect(promise).rejects.toThrow();
   });
 });
