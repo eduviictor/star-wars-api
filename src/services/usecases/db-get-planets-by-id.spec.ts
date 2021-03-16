@@ -56,4 +56,17 @@ describe('DbGetPlanetsById Usecase', () => {
       movies: 5,
     });
   });
+
+  test('Should throw if GetPlanetsByIdRepository throws', async () => {
+    const { sut, getPlanetsByIdRepositoryStub } = makeSut();
+    jest
+      .spyOn(getPlanetsByIdRepositoryStub, 'getById')
+      .mockReturnValueOnce(
+        new Promise((resolve, reject) => reject(new Error()))
+      );
+
+    const promise = sut.getById('any_id');
+
+    await expect(promise).rejects.toThrow();
+  });
 });
