@@ -38,7 +38,7 @@
     "test:integration": "yarn test -- --watch -c jest-integration-config.js",
     "test:staged": "yarn test -- --findRelatedTests",
     "test:ci": "yarn test -- --coverage --silent",
-    "build": "rimraf dist && tsc -p tsconfig.json"
+    "build": "rimraf dist && tsc -p tsconfig-build.json"
   },
   "dependencies": {
     "axios": "^0.21.1",
