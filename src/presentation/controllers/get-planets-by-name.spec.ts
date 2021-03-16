@@ -1,5 +1,6 @@
 import { PlanetModel } from '@/domain/models/planet';
 import { GetPlanetsByName } from '@/domain/usecases/get-planets-by-name';
+import { MissingParamError } from '../errors/missing-param-error';
 import { ServerError } from '../errors/server-error';
 import { GetPlanetsByNameController } from './get-planets-by-name';
 
@@ -68,5 +69,16 @@ describe('GetPlanetByName Controller', () => {
       ground: 'valid_ground',
       movies: 5,
     });
+  });
+
+  test('Should return 400 if no name param is provided', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {},
+      params: {},
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body).toEqual(new MissingParamError('name'));
   });
 });

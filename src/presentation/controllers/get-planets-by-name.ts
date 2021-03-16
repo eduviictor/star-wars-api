@@ -14,7 +14,6 @@ export class GetPlanetsByNameController implements Controller {
       } = request;
 
       if (!name) {
-        console.log('opa');
         return badRequest(new MissingParamError('name'));
       }
 
