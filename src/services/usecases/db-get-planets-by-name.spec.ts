@@ -56,4 +56,17 @@ describe('DbGetPlanetsByName Usecase', () => {
       movies: 5,
     });
   });
+
+  test('Should throw if GetPlanetsByNameRepository throws', async () => {
+    const { sut, getPlanetsByNameRepositoryStub } = makeSut();
+    jest
+      .spyOn(getPlanetsByNameRepositoryStub, 'getByName')
+      .mockReturnValueOnce(
+        new Promise((resolve, reject) => reject(new Error()))
+      );
+
+    const promise = sut.getByName('any_name');
+
+    await expect(promise).rejects.toThrow();
+  });
 });
