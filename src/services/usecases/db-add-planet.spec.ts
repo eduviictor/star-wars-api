@@ -1,6 +1,6 @@
 import { PlanetModel } from '@/domain/models/planet';
 import { AddPlanetModel } from '@/domain/usecases/add-planet';
-import { AddPlanetRepository } from '../protocols/db/add-planet-repository';
+import { AddPlanetRepository } from '../protocols/db/db-add-planet-repository';
 import { MoviesPlanet } from '../protocols/request/movies-planet';
 import { DbAddPlanet } from './db-add-planet';
 

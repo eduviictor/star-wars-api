@@ -1,9 +1,6 @@
 import { PlanetModel } from '@/domain/models/planet';
 import { AddPlanetModel } from '@/domain/usecases/add-planet';
-import { AddPlanetRepository } from '../protocols/db/add-planet-repository';
 import { GetPlanetsRepository } from '../protocols/db/db-get-planets-repository';
-import { MoviesPlanet } from '../protocols/request/movies-planet';
-import { DbAddPlanet } from './db-add-planet';
 import { DbGetPlanets } from './db-get-planets';
 
 const makeGetPlanetsRepository = (): GetPlanetsRepository => {

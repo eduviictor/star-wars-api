@@ -1,6 +1,6 @@
 import { PlanetModel } from '@/domain/models/planet';
 import { AddPlanetModelDatabase } from '@/domain/usecases/add-planet';
-import { AddPlanetRepository } from '@/services/protocols/db/add-planet-repository';
+import { AddPlanetRepository } from '@/services/protocols/db/db-add-planet-repository';
 import { GetPlanetsRepository } from '@/services/protocols/db/db-get-planets-repository';
 import { MongoHelper } from '../helpers/mongo-helper';
 
