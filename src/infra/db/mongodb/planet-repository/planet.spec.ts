@@ -74,7 +74,6 @@ describe('Planet Mongo Repository', () => {
       });
 
       const planet = await sut.getByName('valid_name');
-      console.log(planet);
 
       expect(planet).toBeTruthy();
       expect(planet.name).toBe('valid_name');
