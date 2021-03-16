@@ -118,5 +118,20 @@ describe('Planet Mongo Repository', () => {
       expect(planet.ground).toBe('any_ground');
       expect(planet.movies).toBe(5);
     });
+
+    test('Should return null if there is no planet with that id', async () => {
+      const sut = makeSut();
+
+      await sut.add({
+        name: 'valid_name',
+        climate: 'any_climate',
+        ground: 'any_ground',
+        movies: 5,
+      });
+
+      const planet = await sut.getByName('invalid_id');
+
+      expect(planet).toBeFalsy();
+    });
   });
 });
