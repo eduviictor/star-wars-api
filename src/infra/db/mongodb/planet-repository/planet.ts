@@ -5,7 +5,7 @@ import { MongoHelper } from '../helpers/mongo-helper';
 
 export class PlanetMongoRepository implements AddPlanetRepository {
   async add(planetData: AddPlanetModelDatabase): Promise<PlanetModel> {
-    const planetCollection = MongoHelper.getCollection('planets');
+    const planetCollection = await MongoHelper.getCollection('planets');
     const result = await planetCollection.insertOne(planetData);
     return MongoHelper.map(result.ops[0]);
   }
