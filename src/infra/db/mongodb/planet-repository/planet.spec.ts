@@ -129,7 +129,7 @@ describe('Planet Mongo Repository', () => {
         movies: 5,
       });
 
-      const planet = await sut.getByName('invalid_id');
+      const planet = await sut.getById('invalid_id');
 
       expect(planet).toBeFalsy();
     });

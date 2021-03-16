@@ -4,6 +4,7 @@ import { AddPlanetRepository } from '@/services/protocols/db/db-add-planet-repos
 import { GetPlanetsByIdRepository } from '@/services/protocols/db/db-get-planets-by-id-repository';
 import { GetPlanetsByNameRepository } from '@/services/protocols/db/db-get-planets-by-name-repository';
 import { GetPlanetsRepository } from '@/services/protocols/db/db-get-planets-repository';
+import { ObjectId } from 'bson';
 import { MongoHelper } from '../helpers/mongo-helper';
 
 export class PlanetMongoRepository
@@ -37,7 +38,8 @@ export class PlanetMongoRepository
 
   async getById(id: string): Promise<PlanetModel> {
     const planetCollection = await MongoHelper.getCollection('planets');
-    const result = await planetCollection.findOne({ _id: id });
+    const idObjectId = new ObjectId(id);
+    const result = await planetCollection.findOne({ _id: idObjectId });
     if (!result) {
       return null;
     }
