@@ -1,5 +1,8 @@
 import { MongoHelper } from '../helpers/mongo-helper';
 import { PlanetMongoRepository } from './planet';
+import FakeObjectId from 'bson-objectid';
+
+const fakeId = new FakeObjectId();
 
 describe('Planet Mongo Repository', () => {
   beforeAll(async () => {
@@ -129,7 +132,7 @@ describe('Planet Mongo Repository', () => {
         movies: 5,
       });
 
-      const planet = await sut.getById('invalid_id');
+      const planet = await sut.getById(String(fakeId));
 
       expect(planet).toBeFalsy();
     });
