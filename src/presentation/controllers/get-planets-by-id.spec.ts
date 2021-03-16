@@ -1,14 +1,18 @@
 import { PlanetModel } from '@/domain/models/planet';
 import { GetPlanetsById } from '@/domain/usecases/get-planets-by-id';
+import FakeObjectId from 'bson-objectid';
+import { InvalidParamError } from '../errors/invalid-param-error';
 import { MissingParamError } from '../errors/missing-param-error';
 import { ServerError } from '../errors/server-error';
 import { GetPlanetsByIdController } from './get-planets-by-id';
+
+const validId = new FakeObjectId();
 
 const makeGetPlanetsById = (): GetPlanetsById => {
   class GetPlanetsByIdStub implements GetPlanetsById {
     async getById(id: string): Promise<PlanetModel> {
       const fakePlanet = {
-        id: 'valid_id',
+        id: String(validId),
         name: 'valid_name',
         climate: 'valid_climate',
         ground: 'valid_ground',
@@ -45,7 +49,7 @@ describe('GetPlanetsById Controller', () => {
       });
     const httpRequest = {
       body: {},
-      params: { id: 'valid_id' },
+      params: { id: String(validId) },
     };
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(500);
@@ -57,13 +61,13 @@ describe('GetPlanetsById Controller', () => {
     const httpRequest = {
       body: {},
       params: {
-        id: 'valid_id',
+        id: String(validId),
       },
     };
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(200);
     expect(httpResponse.body).toEqual({
-      id: 'valid_id',
+      id: String(validId),
       name: 'valid_name',
       climate: 'valid_climate',
       ground: 'valid_ground',
@@ -80,5 +84,16 @@ describe('GetPlanetsById Controller', () => {
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
     expect(httpResponse.body).toEqual(new MissingParamError('id'));
+  });
+
+  test('Should return 400 if id is not valid', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {},
+      params: { id: 'invalid_id' },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body).toEqual(new InvalidParamError('id'));
   });
 });
