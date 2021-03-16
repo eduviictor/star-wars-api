@@ -97,4 +97,26 @@ describe('Planet Mongo Repository', () => {
       expect(planet).toBeFalsy();
     });
   });
+
+  describe('getById()', () => {
+    test('Should return an planet with success', async () => {
+      const sut = makeSut();
+
+      const { id } = await sut.add({
+        name: 'valid_name',
+        climate: 'any_climate',
+        ground: 'any_ground',
+        movies: 5,
+      });
+
+      const planet = await sut.getById(id);
+
+      expect(planet).toBeTruthy();
+      expect(String(planet.id)).toBe(String(id));
+      expect(planet.name).toBe('valid_name');
+      expect(planet.climate).toBe('any_climate');
+      expect(planet.ground).toBe('any_ground');
+      expect(planet.movies).toBe(5);
+    });
+  });
 });
