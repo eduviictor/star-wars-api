@@ -7,8 +7,8 @@ import { AxiosAdapter } from '@/utils/http/axios/axios-adapter';
 
 export const makeAddPlanetController = (): Controller => {
   const axiosAdapter = new AxiosAdapter();
-  const addPlanetRepository = new PlanetMongoRepository();
+  const planetRepository = new PlanetMongoRepository();
   const swapiAdapter = new SwapiAdapter(axiosAdapter);
-  const dbAddPlanet = new DbAddPlanet(swapiAdapter, addPlanetRepository);
+  const dbAddPlanet = new DbAddPlanet(swapiAdapter, planetRepository);
   return new AddPlanetController(dbAddPlanet);
 };
