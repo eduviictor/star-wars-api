@@ -42,4 +42,18 @@ describe('DbGetPlanetsById Usecase', () => {
 
     expect(indexSpy).toHaveBeenCalledTimes(1);
   });
+
+  test('Should GetPlanetsByIdRepository return an planet with success', async () => {
+    const { sut } = makeSut();
+
+    const planets = await sut.getById('valid_id');
+
+    expect(planets).toEqual({
+      id: 'valid_id',
+      name: 'valid_name',
+      climate: 'valid_climate',
+      ground: 'valid_ground',
+      movies: 5,
+    });
+  });
 });
