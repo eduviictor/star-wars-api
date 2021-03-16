@@ -70,4 +70,15 @@ describe('GetPlanetsById Controller', () => {
       movies: 5,
     });
   });
+
+  test('Should return 400 if no id param is provided', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {},
+      params: {},
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body).toEqual(new MissingParamError('id'));
+  });
 });
