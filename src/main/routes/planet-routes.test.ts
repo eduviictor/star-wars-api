@@ -48,4 +48,24 @@ describe('Planet Routes', () => {
         },
       ]);
   });
+
+  test('Should return a planet based on its name', async () => {
+    const planetCollection = await MongoHelper.getCollection('planets');
+    const planetInDb = await planetCollection.insertOne({
+      name: 'valid_name',
+      climate: 'any_climate',
+      ground: 'any_ground',
+      movies: 5,
+    });
+
+    await request(app)
+      .get('/planets/valid_name')
+      .expect({
+        name: 'valid_name',
+        climate: 'any_climate',
+        ground: 'any_ground',
+        movies: 5,
+        id: String(planetInDb.ops[0]._id),
+      });
+  });
 });
