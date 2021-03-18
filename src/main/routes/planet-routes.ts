@@ -13,6 +13,6 @@ export default (router: Router): void => {
     '/planets/name/:name',
     adaptRoute(makeGetPlanetsByNameController())
   );
-  router.get('/planets/id/:id', adaptRoute(makeGetPlanetsByIdController()));
+  router.get('/planets/:id', adaptRoute(makeGetPlanetsByIdController()));
   router.delete('/planets/:id', adaptRoute(makeDeletePlanetsController()));
 };

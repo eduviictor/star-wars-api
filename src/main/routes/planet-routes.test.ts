@@ -80,7 +80,7 @@ describe('Planet Routes', () => {
 
     const id = planetInDb.ops[0]._id;
     await request(app)
-      .get(`/planets/id/${id}`)
+      .get(`/planets/${id}`)
       .expect({
         name: 'valid_name',
         climate: 'any_climate',
@@ -102,6 +102,6 @@ describe('Planet Routes', () => {
     const id = planetInDb.ops[0]._id;
     await request(app).delete(`/planets/${id}`);
 
-    await request(app).get(`/planets/id/${id}`).expect(404);
+    await request(app).get(`/planets/${id}`).expect(404);
   });
 });
