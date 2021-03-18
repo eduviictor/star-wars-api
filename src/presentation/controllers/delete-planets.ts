@@ -33,7 +33,9 @@ export class DeletePlanetsController implements Controller {
         return notFound('Id is not found');
       }
 
-      return ok(planet);
+      await this.deletePlanets.delete(planet.id);
+
+      return ok('Planet deleted by success');
     } catch (error) {
       console.error(error);
       return serverError();
