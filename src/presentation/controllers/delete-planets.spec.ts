@@ -111,4 +111,16 @@ describe('DeletePlanets Controller', () => {
     expect(httpResponse.statusCode).toBe(500);
     expect(httpResponse.body).toEqual(new ServerError());
   });
+
+  test('Should return 200 if all goes well', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {},
+      params: {
+        id: String(validId),
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(200);
+  });
 });
