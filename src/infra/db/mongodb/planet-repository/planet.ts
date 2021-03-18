@@ -1,6 +1,7 @@
 import { PlanetModel } from '@/domain/models/planet';
 import { AddPlanetModelDatabase } from '@/domain/usecases/add-planet';
 import { AddPlanetRepository } from '@/services/protocols/db/db-add-planet-repository';
+import { DeletePlanetsRepository } from '@/services/protocols/db/db-delete-planets-repository';
 import { GetPlanetsByIdRepository } from '@/services/protocols/db/db-get-planets-by-id-repository';
 import { GetPlanetsByNameRepository } from '@/services/protocols/db/db-get-planets-by-name-repository';
 import { GetPlanetsRepository } from '@/services/protocols/db/db-get-planets-repository';
@@ -12,7 +13,8 @@ export class PlanetMongoRepository
     AddPlanetRepository,
     GetPlanetsRepository,
     GetPlanetsByNameRepository,
-    GetPlanetsByIdRepository {
+    GetPlanetsByIdRepository,
+    DeletePlanetsRepository {
   async add(planetData: AddPlanetModelDatabase): Promise<PlanetModel> {
     const planetCollection = await MongoHelper.getCollection('planets');
     const result = await planetCollection.insertOne(planetData);
@@ -45,5 +47,12 @@ export class PlanetMongoRepository
       return null;
     }
     return MongoHelper.map(result);
+  }
+
+  async delete(id: string): Promise<void> {
+    const planetCollection = await MongoHelper.getCollection('planets');
+    await planetCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
   }
 }
