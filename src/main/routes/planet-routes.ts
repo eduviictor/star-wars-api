@@ -4,6 +4,7 @@ import { Router } from 'express';
 import { makeGetPlanetsController } from '../factories/get-planets';
 import { makeGetPlanetsByNameController } from '../factories/get-planets-by-name';
 import { makeGetPlanetsByIdController } from '../factories/get-planets-by-id';
+import { makeDeletePlanetsController } from '../factories/delete-planets';
 
 export default (router: Router): void => {
   router.post('/planets', adaptRoute(makeAddPlanetController()));
@@ -13,4 +14,5 @@ export default (router: Router): void => {
     adaptRoute(makeGetPlanetsByNameController())
   );
   router.get('/planets/id/:id', adaptRoute(makeGetPlanetsByIdController()));
+  router.delete('/planets/:id', adaptRoute(makeDeletePlanetsController()));
 };
