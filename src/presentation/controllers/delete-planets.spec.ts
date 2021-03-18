@@ -83,19 +83,18 @@ describe('DeletePlanets Controller', () => {
     expect(httpResponse.body).toEqual(new ServerError());
   });
 
-  test('Should return 500 if GetPlanetsById throws', async () => {
+  test('Should return 404 if not found id', async () => {
     const { sut, getPlanetsByIdStub } = makeSut();
     jest
       .spyOn(getPlanetsByIdStub, 'getById')
       .mockImplementationOnce(async () => {
-        return await new Promise((resolve, reject) => reject(new Error()));
+        return await new Promise((resolve, reject) => resolve(null));
       });
     const httpRequest = {
       body: {},
       params: { id: String(validId) },
     };
     const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse.statusCode).toBe(500);
-    expect(httpResponse.body).toEqual(new ServerError());
+    expect(httpResponse.statusCode).toBe(404);
   });
 });
