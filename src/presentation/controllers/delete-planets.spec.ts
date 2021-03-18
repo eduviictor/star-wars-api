@@ -66,4 +66,15 @@ describe('DeletePlanets Controller', () => {
     expect(httpResponse.statusCode).toBe(400);
     expect(httpResponse.body).toEqual(new MissingParamError('id'));
   });
+
+  test('Should return 400 if id is not valid', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {},
+      params: { id: 'invalid_id' },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body).toEqual(new InvalidParamError('id'));
+  });
 });
