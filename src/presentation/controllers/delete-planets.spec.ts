@@ -28,8 +28,8 @@ const makeGetPlanetsById = (): GetPlanetsById => {
 
 const makeDeletePlanets = (): DeletePlanets => {
   class DeletePlanetsStub implements DeletePlanets {
-    async delete(id: string): Promise<boolean> {
-      return await new Promise((resolve) => resolve(true));
+    async delete(id: string): Promise<void> {
+      return await new Promise((resolve) => resolve());
     }
   }
   return new DeletePlanetsStub();
@@ -65,6 +65,17 @@ describe('DeletePlanets Controller', () => {
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
     expect(httpResponse.body).toEqual(new MissingParamError('id'));
+  });
+
+  test('Should return 400 if id is not valid', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {},
+      params: { id: 'invalid_id' },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body).toEqual(new InvalidParamError('id'));
   });
 
   test('Should return 500 if GetPlanetsById throws', async () => {
