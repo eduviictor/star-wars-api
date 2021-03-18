@@ -36,11 +36,14 @@ const makeSut = (): SutTypes => {
 describe('DbGetPlanetsByName Usecase', () => {
   test('Should call GetPlanetsByNameRepository', async () => {
     const { sut, getPlanetsByNameRepositoryStub } = makeSut();
-    const indexSpy = jest.spyOn(getPlanetsByNameRepositoryStub, 'getByName');
+    const getByNameSpy = jest.spyOn(
+      getPlanetsByNameRepositoryStub,
+      'getByName'
+    );
 
     await sut.getByName('any_name');
 
-    expect(indexSpy).toHaveBeenCalledTimes(1);
+    expect(getByNameSpy).toHaveBeenCalledTimes(1);
   });
 
   test('Should GetPlanetsByNameRepository return an planet with success', async () => {
