@@ -137,4 +137,23 @@ describe('Planet Mongo Repository', () => {
       expect(planet).toBeFalsy();
     });
   });
+
+  describe('delete()', () => {
+    test('Should delete an planet with success', async () => {
+      const sut = makeSut();
+
+      const { id } = await sut.add({
+        name: 'valid_name',
+        climate: 'any_climate',
+        ground: 'any_ground',
+        movies: 5,
+      });
+
+      await sut.delete(id);
+
+      const planet = await sut.getById(String(id));
+
+      expect(planet).toBeFalsy();
+    });
+  });
 });
