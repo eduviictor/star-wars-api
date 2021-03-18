@@ -67,14 +67,35 @@ describe('DeletePlanets Controller', () => {
     expect(httpResponse.body).toEqual(new MissingParamError('id'));
   });
 
-  test('Should return 400 if id is not valid', async () => {
-    const { sut } = makeSut();
+  test('Should return 500 if GetPlanetsById throws', async () => {
+    const { sut, getPlanetsByIdStub } = makeSut();
+    jest
+      .spyOn(getPlanetsByIdStub, 'getById')
+      .mockImplementationOnce(async () => {
+        return await new Promise((resolve, reject) => reject(new Error()));
+      });
     const httpRequest = {
       body: {},
-      params: { id: 'invalid_id' },
+      params: { id: String(validId) },
     };
     const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new InvalidParamError('id'));
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse.body).toEqual(new ServerError());
+  });
+
+  test('Should return 500 if GetPlanetsById throws', async () => {
+    const { sut, getPlanetsByIdStub } = makeSut();
+    jest
+      .spyOn(getPlanetsByIdStub, 'getById')
+      .mockImplementationOnce(async () => {
+        return await new Promise((resolve, reject) => reject(new Error()));
+      });
+    const httpRequest = {
+      body: {},
+      params: { id: String(validId) },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse.body).toEqual(new ServerError());
   });
 });
