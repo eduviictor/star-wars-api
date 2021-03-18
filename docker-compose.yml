@@ -9,10 +9,23 @@ services:
     volumes:
       - mongodata:/data/db
     image: mongo:latest
-    env_file: .env
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASS}
-      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+    restart: always
     ports:
       - '27017:27017'
+  api:
+    container_name: api
+    image: node:12
+    working_dir: /usr/src/star-wars-api
+    restart: always
+    command: bash -c "yarn --only=prod && yarn start"
+    environment:
+      MONGO_URL: ${MONGO_URL}
+    volumes:
+      - ./dist/:/usr/src/star-wars-api/dist/
+      - ./package.json:/usr/src/star-wars-api/package.json
+      - ./tsconfig-paths-bootstrap.js:/usr/src/star-wars-api/tsconfig-paths-bootstrap.js
+      - ./tsconfig.json:/usr/src/star-wars-api/tsconfig.json
+    ports:
+      - '3000:3000'
+    links:
+      - mongo
