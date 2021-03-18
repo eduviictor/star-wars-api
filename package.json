@@ -1,8 +1,7 @@
 {
   "name": "star-wars-api",
   "version": "1.0.0",
-  "main": "index.js",
-  "repository": "git@github.com:eduviictor/star-wars-api.git",
+  "repository": "github:eduviictor/star-wars-api",
   "author": "eduviictor <eduvictornobrega@gmail.com>",
   "license": "MIT",
   "devDependencies": {
