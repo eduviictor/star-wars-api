@@ -3,7 +3,7 @@ import { GetPlanetsById } from '@/domain/usecases/get-planets-by-id';
 import { ObjectId } from 'mongodb';
 import { InvalidParamError } from '../errors/invalid-param-error';
 import { MissingParamError } from '../errors/missing-param-error';
-import { serverError, badRequest } from '../helpers/http';
+import { serverError, ok, badRequest } from '../helpers/http';
 import { Controller } from '../protocols/controller';
 import { HttpResponse, HttpRequest } from '../protocols/http';
 
@@ -26,6 +26,10 @@ export class DeletePlanetsController implements Controller {
       if (!ObjectId.isValid(id)) {
         return badRequest(new InvalidParamError('id'));
       }
+
+      const planet = await this.getPlanetsById.getById(id);
+
+      return ok(planet);
     } catch (error) {
       console.error(error);
       return serverError();
