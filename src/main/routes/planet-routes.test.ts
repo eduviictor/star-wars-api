@@ -89,4 +89,19 @@ describe('Planet Routes', () => {
         id: String(id),
       });
   });
+
+  test('Should delete a planet based on its id', async () => {
+    const planetCollection = await MongoHelper.getCollection('planets');
+    const planetInDb = await planetCollection.insertOne({
+      name: 'valid_name',
+      climate: 'any_climate',
+      ground: 'any_ground',
+      movies: 5,
+    });
+
+    const id = planetInDb.ops[0]._id;
+    await request(app).delete(`/planets/${id}`);
+
+    await request(app).get(`/planets/id/${id}`).expect(404);
+  });
 });
