@@ -34,4 +34,17 @@ describe('DbDeletePlanets Usecase', () => {
 
     expect(deleteSpy).toHaveBeenCalledTimes(1);
   });
+
+  test('Should throw if DeletePlanetsRepository throws', async () => {
+    const { sut, deletePlanetsRepositoryStub } = makeSut();
+    jest
+      .spyOn(deletePlanetsRepositoryStub, 'delete')
+      .mockReturnValueOnce(
+        new Promise((resolve, reject) => reject(new Error()))
+      );
+
+    const promise = sut.delete('any_id');
+
+    await expect(promise).rejects.toThrow();
+  });
 });
