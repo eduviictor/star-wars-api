@@ -97,4 +97,18 @@ describe('DeletePlanets Controller', () => {
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(404);
   });
+
+  test('Should return 500 if DeletePlanets throws', async () => {
+    const { sut, deletePlanetsStub } = makeSut();
+    jest.spyOn(deletePlanetsStub, 'delete').mockImplementationOnce(async () => {
+      return await new Promise((resolve, reject) => reject(new Error()));
+    });
+    const httpRequest = {
+      body: {},
+      params: { id: String(validId) },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse.body).toEqual(new ServerError());
+  });
 });
