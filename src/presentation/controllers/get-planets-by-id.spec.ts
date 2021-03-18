@@ -96,4 +96,19 @@ describe('GetPlanetsById Controller', () => {
     expect(httpResponse.statusCode).toBe(400);
     expect(httpResponse.body).toEqual(new InvalidParamError('id'));
   });
+
+  test('Should return 404 if not found id', async () => {
+    const { sut, getPlanetsByIdStub } = makeSut();
+    jest
+      .spyOn(getPlanetsByIdStub, 'getById')
+      .mockImplementationOnce(async () => {
+        return await new Promise((resolve, reject) => resolve(null));
+      });
+    const httpRequest = {
+      body: {},
+      params: { id: String(validId) },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(404);
+  });
 });

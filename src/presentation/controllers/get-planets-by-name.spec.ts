@@ -81,4 +81,19 @@ describe('GetPlanetByName Controller', () => {
     expect(httpResponse.statusCode).toBe(400);
     expect(httpResponse.body).toEqual(new MissingParamError('name'));
   });
+
+  test('Should return 404 if not found id', async () => {
+    const { sut, getPlanetsByNameStub } = makeSut();
+    jest
+      .spyOn(getPlanetsByNameStub, 'getByName')
+      .mockImplementationOnce(async () => {
+        return await new Promise((resolve, reject) => resolve(null));
+      });
+    const httpRequest = {
+      body: {},
+      params: { name: 'invalid_name' },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(404);
+  });
 });
