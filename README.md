@@ -5,6 +5,8 @@
 
 ## [**Link da documentação**](https://star-wars-edu.herokuapp.com/docs)
 
+## [**Link da api hospedada no Heroku**](https://star-wars-edu.herokuapp.com/)
+
 ## Instalação
 
 1. Clone o repositório.
